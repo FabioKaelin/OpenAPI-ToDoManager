@@ -15,7 +15,7 @@ const initOptions = {
 const pgp = require('pg-promise')(initOptions);
 
 const cn = {
-  host: '172.19.0.3',
+  host: '172.19.0.2',
   port: 5432,
   database: 'm295',
   user: 'admin',
