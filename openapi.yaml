@@ -1,0 +1,116 @@
+openapi: '3.0.3'
+
+info:
+  title: 'testapi'
+  description: 'Sample API with unit-tests.'
+  version: '1.0.1'
+  contact:
+    name: 'Fabian Dennler'
+    email: 'fabian.dennler@zli.ch'
+    url: 'https://www.zli.ch'
+  license:
+    name: 'MIT'
+    url: 'https://opensource.org/licenses/MIT'
+
+servers:
+  - url: '{protocol}://{host}:{port}/{version}'
+    description: 'Web address for the API'
+    variables:
+      protocol:
+        enum:
+          - 'http'
+          - 'https'
+        default: 'http'
+      host:
+        description: 'Server IP Address or host name.'
+        default: 'localhost'
+      version:
+        description: 'Current API version.'
+        default: 'v1'
+      port:
+        description: 'Server port number.'
+        default: '3000'
+        enum:
+          - '3000'
+
+paths:
+  /ping:
+    parameters:
+      - $ref: '#/components/parameters/message'
+    get:
+      description: 'ping then pong!'
+      operationId: ping
+      x-eov-operation-id: 'ping'
+      x-eov-operation-handler: 'ping'
+      security: []
+      responses:
+        '200':
+          $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
+
+#  /healthcheck:
+#    parameters:
+#     - $ref: '#/components/parameters/message'
+#    get:
+#      description: 'healthcheck!'
+#      operationId: healthcheck
+#      x-eov-operation-id: 'healthcheck'
+#      x-eov-operation-handler: 'healthcheck'
+#      security: []
+#      responses:
+#        '200':
+#          $ref: '#/components/responses/successful'
+#        default:
+#          $ref: '#/components/responses/unexpected'
+
+components:
+  schemas:
+    response:
+      description: 'Object containing the API response.'
+      type: 'object'
+      properties:
+        code:
+          description: 'HTTP Status code to indicate if there was an error'
+          type: 'integer'
+          format: 'int32'
+        message:
+          description: 'User-Friendly Success or Error Message. Eight words or less.'
+          type: 'string'
+        data:
+          type: 'object'
+          description: 'Optional endpoint specific data, response or error payload from back-end'
+      required:
+        - code
+  responses:
+    successful:
+      description: 'Successful'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/response'
+          example:
+            code: 200
+            message: 'The item was successfully published.'
+            data:
+              id: 1
+    unexpected:
+      description: 'Unexpected error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/response'
+          example:
+            code: 500
+            message: 'Data format is not supported.'
+            data: null
+  parameters:
+    message:
+      name: 'message'
+      in: 'query'
+      required: false
+      allowEmptyValue: true
+      description: 'An optional message to send'
+      schema:
+        type: 'string'
+      example: 'Hello World'
