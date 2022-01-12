@@ -6,13 +6,13 @@ const errorHandler = (err, req, res, next) => {
   if (err instanceof GeneralError) {
     return res.status(err.getCode()).json({
       code: err.getCode(),
-      message: err.getUserFriendlyMessage()
+      message: err.getUserFriendlyMessage(),
     });
   }
   return res.status(err.status || 500).json({
     code: err.status || 500,
-    message: err.message
+    message: err.message,
   });
-}
+};
 
-module.exports = errorHandler
+module.exports = errorHandler;
