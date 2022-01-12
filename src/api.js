@@ -3,7 +3,8 @@ const path = require('path');
 const logger = require('./utils/logger');
 const morgan = require('morgan');
 const cors = require('cors');
-
+const db = require('./utils/db'); // your db module
+// const pgp = db.$config.pgp; // the library's root after initialization
 const OpenApiValidator = require('express-openapi-validator');
 
 const errorHandler = require('./middleware/error-handler');
