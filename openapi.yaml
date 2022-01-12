@@ -49,20 +49,20 @@ paths:
         default:
           $ref: '#/components/responses/unexpected'
 
-#  /healthcheck:
-#    parameters:
-#     - $ref: '#/components/parameters/message'
-#    get:
-#      description: 'healthcheck!'
-#      operationId: healthcheck
-#      x-eov-operation-id: 'healthcheck'
-#      x-eov-operation-handler: 'healthcheck'
-#      security: []
-#      responses:
-#        '200':
-#          $ref: '#/components/responses/successful'
-#        default:
-#          $ref: '#/components/responses/unexpected'
+  /healthcheck:
+    parameters:
+      - $ref: '#/components/parameters/message'
+    get:
+      description: 'healthcheck!'
+      operationId: healthcheck
+      x-eov-operation-id: 'healthcheck'
+      x-eov-operation-handler: 'healthcheck'
+      security: []
+      responses:
+        '200':
+          $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
 
 components:
   schemas:
