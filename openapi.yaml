@@ -34,6 +34,26 @@ servers:
           - '3000'
 
 paths:
+  /unauthorized:
+    get:
+      description: 'Temporary endpoint to check 401 Unauthorized error response'
+      operationId: unauthorized
+      x-eov-operation-id: 'unauthorized'
+      x-eov-operation-handler: 'unauthorized'
+      responses:
+        default:
+          $ref: '#/components/responses/unauthorized'
+  # /uuid:
+  #   get:
+  #     description: 'Get a random UUID from database'
+  #     operationId: uuid
+  #     x-eov-operation-id: 'uuid'
+  #     x-eov-operation-handler: 'uuid'
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/successful'
+  #       default:
+  #         $ref: '#/components/responses/unexpected'
   /ping:
     parameters:
       - $ref: '#/components/parameters/message'
@@ -103,6 +123,16 @@ components:
           example:
             code: 500
             message: 'Data format is not supported.'
+            data: null
+    unauthorized:
+      description: 'unauthorized error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/response'
+          example:
+            code: 500
+            message: 'You are not authorized'
             data: null
   parameters:
     message:
