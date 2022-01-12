@@ -4,33 +4,42 @@ var app = require('../api');
 
 describe('API Endpoints', function () {
   describe('GET /v1/ping', function () {
-    it('responds with JSON', function (done) {
+    it('/ping responds with JSON', function (done) {
       request(app)
         .get('/v1/ping')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, done);
     });
-    // it('responds with given parameter', function(done) {
-    // });
-    // it('fails if parameter contain reserved characters like !', function(done) {
-    // });
   });
   describe('GET /v1/healthcheck', function () {
-    it('responds with JSON', function (done) {
+    it('/healthcheck responds with JSON', function (done) {
       request(app)
         .get('/v1/healthcheck')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, done);
     });
-    // it('responds with given parameter', function(done) {
-    // });
-    // it('fails if parameter contain reserved characters like !', function(done) {
-    // });
+  });
+  describe('GET /v1/uuid', function () {
+    it('/uuid responds with JSON', function (done) {
+      request(app)
+        .get('/v1/uuid')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    });
+  });
+  describe('GET /v1/uuid', function () {
+    it('/uuid responds has 32 characters', function (done) {
+      request(app)
+        .get('/v1/uuid')
+        .set('Accept', 'application/json')
+        .expect(function (res) {
+          uuidinhalt = String(res.body.data.uuid);
+          assert(uuidinhalt.length, 32);
+        })
+        .expect(200, done);
+    });
   });
 });
-
-// .expect(function(res){
-//   assert(res.bod.message, "Hello")
-// })
