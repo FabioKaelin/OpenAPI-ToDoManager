@@ -1,8 +1,9 @@
 {
-  "name": "testapi",
+  "name": "open-api-skeleton",
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "api": "node ./src/api.js",
     "dev": "nodemon ./src/api.js",
     "serve": "node ./src/api.js",
     "test": "nyc --reporter=text mocha --exit --timeout=0 ./src/test/",
@@ -14,6 +15,7 @@
     "express": "^4.17.2",
     "express-openapi": "^9.3.0",
     "express-openapi-validator": "^4.13.5",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg-promise": "^10.11.1",
     "swagger-ui-express": "^4.1.6",
