@@ -1,6 +1,10 @@
 const logger = require('./logger');
+const Users = require('../models/users');
 
 const initOptions = {
+  extend(obj, dc) {
+    obj.users = new Users(obj, pgp);
+  },
   query(e) {
     logger.log('info', e.query);
   },
