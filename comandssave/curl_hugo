@@ -1,0 +1,3 @@
+  curl -d '{"email":"hugo@m295.local.zli.ch", "password":"Zli123"}' \
+    -H "Content-Type: application/json" \
+    -X POST http://localhost:3000/v1/authenticate
