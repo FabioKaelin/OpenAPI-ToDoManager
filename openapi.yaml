@@ -43,6 +43,7 @@ paths:
       responses:
         default:
           $ref: '#/components/responses/unauthorized'
+
   /uuid:
     get:
       description: 'Get a random UUID from database'
@@ -54,6 +55,21 @@ paths:
           $ref: '#/components/responses/successful'
         default:
           $ref: '#/components/responses/unexpected'
+
+  /todo/{todoid}:
+    parameters:
+      - $ref: '#/components/parameters/todoid'
+    get:
+      description: 'Get ToDo from Database'
+      operationId: todoid
+      x-eov-operation-id: 'todoid'
+      x-eov-operation-handler: 'todoid'
+      responses:
+        '200':
+          $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
+
   /ping:
     parameters:
       - $ref: '#/components/parameters/message'
@@ -77,7 +93,33 @@ paths:
       operationId: healthcheck
       x-eov-operation-id: 'healthcheck'
       x-eov-operation-handler: 'healthcheck'
-      security: []
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
+
+  /authenticate:
+    post:
+      description: 'Authenticate user with given password'
+      operationId: authenticate
+      x-eov-operation-id: 'authenticate'
+      x-eov-operation-handler: 'authenticate'
+      responses:
+        '200':
+          $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
+  /verify:
+    get:
+      description: 'Verify if token is valid'
+      operationId: verify
+      x-eov-operation-id: 'verify'
+      x-eov-operation-handler: 'verify'
+      security:
+        - bearerAuth: []
       responses:
         '200':
           $ref: '#/components/responses/successful'
@@ -85,6 +127,11 @@ paths:
           $ref: '#/components/responses/unexpected'
 
 components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
   schemas:
     response:
       description: 'Object containing the API response.'
@@ -144,3 +191,14 @@ components:
       schema:
         type: 'string'
       example: 'Hello World'
+
+    todoid:
+      name: 'todoid'
+      in: 'path'
+      required: true
+      allowEmptyValue: false
+      description: 'ToDo-Id'
+      schema:
+        type: 'integer'
+        format: 'int32'
+      example: '8'
