@@ -1,7 +1,7 @@
 # OpenAPI-Skeleton-M295
 ## Instalation
     
-    git clone https://github.com/FabioKaelin/OpenAPI-Skeleton-M295.git
+    git clone https://github.com/FabioKaelin/OpenAPI-ToDoManager.git
     cd OpenAPI-Skeleton-M295
     npm install
     npm run api
