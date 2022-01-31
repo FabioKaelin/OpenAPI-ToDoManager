@@ -1,9 +1,11 @@
 const logger = require('./logger');
 const Users = require('../models/users');
+const Tasks = require('../models/tasks');
 
 const initOptions = {
   extend(obj, dc) {
     obj.users = new Users(obj, pgp);
+    obj.tasks = new Tasks(obj, pgp);
   },
   query(e) {
     logger.log('info', e.query);
@@ -19,7 +21,7 @@ const initOptions = {
 const pgp = require('pg-promise')(initOptions);
 
 const cn = {
-  host: '172.19.0.2',
+  host: '172.19.0.3',
   port: 5432,
   database: 'm295',
   user: 'admin',

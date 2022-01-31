@@ -42,6 +42,13 @@ class Users {
     );
   }
 
+  getId(email) {
+    return this.db.oneOrNone(
+      'SELECT id, email FROM users WHERE email = $1;',
+      email,
+    );
+  }
+
   unique(email) {
     return this.db.oneOrNone(
       'SELECT email FROM users WHERE email = $1;',

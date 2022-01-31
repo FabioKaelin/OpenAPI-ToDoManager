@@ -25,6 +25,8 @@ const isLoggedIn = (req, res, next) => {
 const grabAuthenticationToken = (req, res, next) => {
   const headers = req.headers['authorization'];
   if (typeof headers !== 'undefined') {
+    console.log('____________-');
+    console.log(headers);
     const bearer = headers.split(' ');
     const token = bearer[1];
     req.token = token;
@@ -53,6 +55,7 @@ const verifyToken = (req, res, next) => {
         });
       } else {
         logger.log('info', 'JWT Verification succeeded!');
+        console.log(decoded);
         req.email = decoded;
         next();
       }

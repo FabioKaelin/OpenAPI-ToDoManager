@@ -1,8 +1,8 @@
 openapi: '3.0.3'
 
 info:
-  title: 'testapi'
-  description: 'Sample API with unit-tests.'
+  title: 'taskapi'
+  description: 'Sample Tasks API with unit-tests.'
   version: '1.0.1'
   contact:
     name: 'Fabian Dennler'
@@ -34,79 +34,26 @@ servers:
           - '3000'
 
 paths:
-  /unauthorized:
+  /healthcheck:
     get:
-      description: 'Temporary endpoint to check 401 Unauthorized error response'
-      operationId: unauthorized
-      x-eov-operation-id: 'unauthorized'
-      x-eov-operation-handler: 'unauthorized'
-      responses:
-        default:
-          $ref: '#/components/responses/unauthorized'
-
-  /uuid:
-    get:
-      description: 'Get a random UUID from database'
-      operationId: uuid
-      x-eov-operation-id: 'uuid'
-      x-eov-operation-handler: 'uuid'
-      responses:
-        '200':
-          $ref: '#/components/responses/successful'
-        default:
-          $ref: '#/components/responses/unexpected'
-
-  /todo/{todoid}:
-    parameters:
-      - $ref: '#/components/parameters/todoid'
-    get:
-      description: 'Get ToDo from Database'
-      operationId: todoid
-      x-eov-operation-id: 'todoid'
-      x-eov-operation-handler: 'todoid'
-      responses:
-        '200':
-          $ref: '#/components/responses/successful'
-        default:
-          $ref: '#/components/responses/unexpected'
-
-  /ping:
-    parameters:
-      - $ref: '#/components/parameters/message'
-    get:
-      description: 'ping then pong!'
-      operationId: ping
-      x-eov-operation-id: 'ping'
-      x-eov-operation-handler: 'ping'
+      description: 'API health check'
+      operationId: healthcheck
+      x-eov-operation-id: 'healthcheck'
+      x-eov-operation-handler: 'healthcheck'
       security: []
       responses:
         '200':
           $ref: '#/components/responses/successful'
         default:
           $ref: '#/components/responses/unexpected'
-
-  /healthcheck:
-    parameters:
-      - $ref: '#/components/parameters/message'
-    get:
-      description: 'healthcheck!'
-      operationId: healthcheck
-      x-eov-operation-id: 'healthcheck'
-      x-eov-operation-handler: 'healthcheck'
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          $ref: '#/components/responses/successful'
-        default:
-          $ref: '#/components/responses/unexpected'
-
   /authenticate:
     post:
       description: 'Authenticate user with given password'
       operationId: authenticate
       x-eov-operation-id: 'authenticate'
       x-eov-operation-handler: 'authenticate'
+      requestBody:
+        $ref: '#/components/requestBodies/credentials'
       responses:
         '200':
           $ref: '#/components/responses/successful'
@@ -125,13 +72,119 @@ paths:
           $ref: '#/components/responses/successful'
         default:
           $ref: '#/components/responses/unexpected'
+  /register:
+    post:
+      description: 'Sign up user with given password'
+      operationId: register
+      x-eov-operation-id: 'register'
+      x-eov-operation-handler: 'register'
+      security: []
+      requestBody:
+        $ref: '#/components/requestBodies/credentials'
+      responses:
+        '200':
+          $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
+  /tasks:
+    get:
+      summary: 'Returns the user tasks.'
+      description: 'Returns the user tasks.'
+      operationId: 'fetchTasks'
+      x-eov-operation-id: 'fetchTasks'
+      x-eov-operation-handler: 'tasks'
+      security:
+        - bearerAuth: []
+      responses:
+        '200': # status code
+          description: 'A JSON array of tasks.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
+    post:
+      summary: 'Create a new personal task.'
+      description: 'Create a new personal task.'
+      operationId: 'addTask'
+      x-eov-operation-id: 'addTask'
+      x-eov-operation-handler: 'tasks'
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/task'
+      responses:
+        '201':
+          description: 'Successful'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/responses/successful'
+                  - $ref: '#/components/schemas/task'
+        default:
+          $ref: '#/components/responses/unexpected'
+  /tasks/{uuid}:
+    parameters:
+      - $ref: '#/components/parameters/uuid'
+    get:
+      summary: 'Returns the task with given id if owner match.'
+      operationId: 'getTask'
+      x-eov-operation-id: 'getTask'
+      x-eov-operation-handler: 'tasks'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Successful'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/responses/successful'
+                  - $ref: '#/components/schemas/task'
+        default:
+          $ref: '#/components/responses/unexpected'
+    post:
+      summary: 'Update the task with given id if owner match.'
+      operationId: 'updateTask'
+      x-eov-operation-id: 'updateTask'
+      x-eov-operation-handler: 'tasks'
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task'
+      responses:
+        '201':
+          description: 'Successful'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/responses/successful'
+                  - $ref: '#/components/schemas/task'
+        default:
+          $ref: '#/components/responses/unexpected'
+    delete:
+      summary: 'Delete the task with given id if owner match.'
+      operationId: 'deleteTask'
+      x-eov-operation-id: 'deleteTask'
+      x-eov-operation-handler: 'tasks'
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          $ref: '#/components/responses/successful'
+        default:
+          $ref: '#/components/responses/unexpected'
 
 components:
-  securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT # optional, arbitrary value for documentation purposes
   schemas:
     response:
       description: 'Object containing the API response.'
@@ -149,6 +202,64 @@ components:
           description: 'Optional endpoint specific data, response or error payload from back-end'
       required:
         - code
+    task:
+      description: 'Model containing task entities.'
+      type: 'object'
+      properties:
+        id:
+          description: 'Id of this task.'
+          type: 'string'
+          format: 'uuid'
+          readOnly: true
+          example: 'd290f1ee-6c54-4b01-90e6-d701748f0851'
+        owner:
+          description: 'The owner of this task.'
+          type: 'string'
+          format: 'uuid'
+          readOnly: true
+          example: 'd290f1ee-6c54-4b01-90e6-d701748f0851'
+        description:
+          description: 'Description of task. Should allow Markdown format.'
+          type: 'string'
+          example: 'Feed the Unicorn'
+        created:
+          description: 'Timestamp when the task has been created.'
+          type: 'string'
+          format: 'date-time'
+          readOnly: true
+          example: 'yyyy-MM-ddTHH:mm:ss.sssZ'
+        updated:
+          description: 'Timestamp when the task has been updated.'
+          type: 'string'
+          format: 'date-time'
+          readOnly: true
+          example: 'yyyy-MM-ddTHH:mm:ss.sssZ'
+      required:
+        - owner
+        - description
+  requestBodies:
+    credentials:
+      description: 'User Credentials'
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: 'string'
+                example: 'hugo@m295.local.zli.ch'
+              password:
+                type: 'string'
+                example: 'myPassword2020*'
+    task:
+      description: 'Object of the task'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/task'
   responses:
     successful:
       description: 'Successful'
@@ -160,7 +271,7 @@ components:
             code: 200
             message: 'The item was successfully published.'
             data:
-              id: 1
+              uuid: 'd290f1ee-6c54-4b01-90e6-d701748f0851'
     unexpected:
       description: 'Unexpected error'
       content:
@@ -172,33 +283,29 @@ components:
             message: 'Data format is not supported.'
             data: null
     unauthorized:
-      description: 'unauthorized error'
+      description: 'Unauthorized error'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/response'
           example:
-            code: 500
-            message: 'You are not authorized'
+            code: 401
+            message: 'Missing authorization.'
             data: null
   parameters:
-    message:
-      name: 'message'
-      in: 'query'
-      required: false
-      allowEmptyValue: true
-      description: 'An optional message to send'
-      schema:
-        type: 'string'
-      example: 'Hello World'
-
-    todoid:
-      name: 'todoid'
+    uuid:
+      name: 'uuid'
       in: 'path'
       required: true
       allowEmptyValue: false
-      description: 'ToDo-Id'
+      description: 'The entity identifier'
       schema:
-        type: 'integer'
-        format: 'int32'
-      example: '8'
+        type: 'string'
+        format: 'uuid'
+        readOnly: true
+        example: 'd290f1ee-6c54-4b01-90e6-d701748f0851'
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes

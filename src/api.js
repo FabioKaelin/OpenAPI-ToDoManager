@@ -3,14 +3,13 @@ const path = require('path');
 const logger = require('./utils/logger');
 const morgan = require('morgan');
 const cors = require('cors');
+require('dotenv').config();
 const db = require('./utils/db'); // your db module
 // const pgp = db.$config.pgp; // the library's root after initialization
 const OpenApiValidator = require('express-openapi-validator');
 
 const errorHandler = require('./middleware/error-handler');
 const { NotFound } = require('./utils/errors');
-
-require('dotenv').config();
 
 const OpenApiFile = path.join(__dirname, process.env.API_SPEC);
 
