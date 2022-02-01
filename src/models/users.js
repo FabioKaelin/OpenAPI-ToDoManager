@@ -14,6 +14,13 @@ class Users {
     return this.db.one('SELECT gen_random_uuid() AS id;');
   }
 
+  idclean() {
+    // return this.db.one("SELECT replace(gen_random_uuid()::text, '-', '') AS UUID;");
+    return this.db.one(
+      "SELECT replace(gen_random_uuid()::text, '-','') AS UUID;",
+    );
+  }
+
   hash(password) {
     return this.db.one("SELECT crypt($1, gen_salt('bf')) AS hash;", password);
   }
