@@ -117,7 +117,7 @@ function updateTask(req, res) {
             .then(function (response) {
               // if (response) {
               const data = {};
-              const pong = new APIResponse(201, 'Update Task', data);
+              const pong = new APIResponse(200, 'Update Task', data);
 
               return res.status(pong.code).json(pong);
               // } else {
