@@ -27,6 +27,7 @@ class Tasks {
   }
 
   update(id, owner, description) {
+    console.log('update tasks models');
     return this.db.none(
       'UPDATE tasks SET description = $1 WHERE id = $2 AND owner = $3;',
       [description, id, owner],
